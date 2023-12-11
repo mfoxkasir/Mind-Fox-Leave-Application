@@ -1,0 +1,120 @@
+﻿<Window x:Class="Mind_Fox_Leave_Application.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Mind_Fox_Leave_Application"
+        mc:Ignorable="d"
+        Title="Mind Fox Leave Application" Height="450" Width="800">
+    <!-- Main Grid -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <!-- Main Grid Mandatory Part -->
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            
+            <!-- Employee Name -->
+            <StackPanel Grid.Row="0" Grid.Column="0">
+                <Label>
+                    Employee Name:
+                </Label>
+                <TextBox Name="EmployeeName"/>
+            </StackPanel>
+            
+            <!-- Employee ID -->
+            <StackPanel Grid.Row="0" Grid.Column="1">
+                <Label>
+                    Employee ID:
+                </Label>
+                <TextBox Name="EmployeeId"/>
+            </StackPanel>
+
+            <!-- Reporting To -->
+            <StackPanel Grid.Row="0" Grid.Column="2">
+                <Label>
+                    Reporting To:
+                </Label>
+                <TextBox Name="ReportingTo"/>
+            </StackPanel>
+
+            <!-- From-To Date -->
+            <StackPanel Grid.Row="1" Grid.Column="0">
+                <Label>
+                    Date:
+                </Label>
+                <DatePicker Name="FromDate"/>
+                <DatePicker Name="ToDate"/>
+            </StackPanel>
+            
+            <!-- Type of Leave -->
+            <StackPanel Grid.Row="1" Grid.Column="1">
+                <Label>
+                    Type of Leave:
+                </Label>
+                <!-- ComboBox Name="LeaveType" ItemsSource="{Binding LeaveType}" -->
+                <ComboBox Name="LeaveType">
+                    <ComboBoxItem Content="Earned Leave"/>
+                    <ComboBoxItem Content="Casual Leave"/>
+                    <ComboBoxItem Content="Personal Leave"/>
+                </ComboBox>
+            </StackPanel>
+
+            <!-- Balance Card -->
+            <StackPanel Grid.Row="1" Grid.Column="2">
+                <Label>
+                    Leave Balance:
+                </Label>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                        </Style>
+                    </Grid.Resources>
+
+                    <TextBlock Grid.Row="0"  Grid.Column="0" Text="EL" />
+                    <TextBlock Grid.Row="0"  Grid.Column="1" Text="CL" />
+                    <TextBlock Grid.Row="0"  Grid.Column="2" Text="PL" />
+                    <TextBlock Grid.Row="1"  Grid.Column="0" Text="{Binding EarnedLeave}" />
+                    <TextBlock Grid.Row="1"  Grid.Column="1" Text="{Binding CasualLeave}" />
+                    <TextBlock Grid.Row="1"  Grid.Column="2" Text="{Binding PersonalLeave}" />
+                </Grid>
+            </StackPanel>
+        </Grid>
+
+        <!-- Main Grid Optional-Button Part -->
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+        </Grid>
+
+        <!-- Main Grid Title Part -->
+        <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="16">
+            Mind Fox Leave Form
+        </Label>
+    </Grid>
+</Window>
