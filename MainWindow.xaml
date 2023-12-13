@@ -11,20 +11,72 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        
-        <!-- Main Grid Mandatory Part -->
+
+		<!-- Main Grid Title -->
+		<Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="16">
+			Mind Fox Leave Form
+		</Label>
+
+		<!-- Main Grid Form -->
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+			          <RowDefinition Height="*" />
+				        <RowDefinition Height="*" />
+			       </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
+			<Grid.Resources>
+				
+				<!--  StackPanel Styles -->
+				<Style TargetType="StackPanel">
+					<Setter Property="VerticalAlignment" Value="Center"/>
+					<Setter Property="Margin" Value="10 0" />
+				</Style>
+
+				<Style TargetType="Label">
+					<Setter Property="FontWeight" Value="DemiBold" />
+				</Style>
+
+				<!-- TextBox Styles -->
+				<Style TargetType="TextBox">
+					<Setter Property="MinHeight" Value="20" />
+					<Setter Property="Template">
+						<Setter.Value>
+							<ControlTemplate TargetType="TextBox">
+								<Border x:Name="border"
+												BorderBrush="Gray"
+												BorderThickness="1"
+												CornerRadius="3">
+									<Border x:Name="innerBorder"
+													Margin="1"
+													Background="White"
+													CornerRadius="3">
+										<ScrollViewer x:Name="PART_ContentHost"/>
+									</Border>
+								</Border>
+								<ControlTemplate.Triggers>
+									<Trigger Property="IsFocused" Value="True">
+										<Setter TargetName="border" Property="BorderBrush" Value="DarkOrange"/>
+										<Setter TargetName="border" Property="Effect">
+											<Setter.Value>
+												<DropShadowEffect ShadowDepth="3" Color="Black" Opacity=".9"/>
+											</Setter.Value>
+										</Setter>
+									</Trigger>
+								</ControlTemplate.Triggers>
+							</ControlTemplate>
+						</Setter.Value>
+					</Setter>
+				</Style>
+
+
+			</Grid.Resources>
             
             <!-- Employee Name -->
             <StackPanel Grid.Row="0" Grid.Column="0">
@@ -39,7 +91,7 @@
                 <Label>
                     Employee ID:
                 </Label>
-                <TextBox Name="EmployeeId"/>
+                <TextBox x:Name="EmployeeId" LostFocus="EmployeeId_LostFocus" />
             </StackPanel>
 
             <!-- Reporting To -->
@@ -55,7 +107,7 @@
                 <Label>
                     Date:
                 </Label>
-                <DatePicker Name="FromDate"/>
+                <DatePicker Name="FromDate" Margin="0,0,0,5"/>
                 <DatePicker Name="ToDate"/>
             </StackPanel>
             
@@ -102,19 +154,23 @@
                     <TextBlock Grid.Row="1"  Grid.Column="2" Text="{Binding PersonalLeave}" />
                 </Grid>
             </StackPanel>
+
+			<StackPanel  Grid.Row="2" Grid.ColumnSpan="3">
+				<Label>
+					Reason:
+				</Label>
+				<TextBox Name="Reason" MinHeight="50"/>
+			</StackPanel>
         </Grid>
 
-        <!-- Main Grid Optional-Button Part -->
-        <Grid Grid.Row="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-        </Grid>
-
-        <!-- Main Grid Title Part -->
-        <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="16">
-            Mind Fox Leave Form
-        </Label>
-    </Grid>
+        <!-- Main Grid Submit button -->
+		<Grid Grid.Row="2">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*" />
+			</Grid.RowDefinitions>
+			<Button x:Name="Submit" Content="Submit" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,30"></Button>
+		</Grid>
+			  
+			
+	</Grid>
 </Window>
