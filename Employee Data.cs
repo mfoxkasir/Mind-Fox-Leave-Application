@@ -4,52 +4,60 @@ using CsvHelper;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Windows;
 
 namespace Mind_Fox_data
 {
-
     public class Employee
     {
         public string Name { get; set; }
         public string ID { get; set; }
         public bool CanReport { get; set; }
-        public int EarnedLeave{ get; set; }
+        public int EarnedLeave { get; set; }
         public int CasualLeave { get; set; }
         public int PersonalLeave { get; set; }
-
-        public Employee(string name, string Id, bool canReport, int EL, int CL, int PL)
-        {
-            Name = name;
-            ID = Id;
-            CanReport = canReport;
-            EarnedLeave = EL;
-            CasualLeave = CL;
-            PersonalLeave = PL;
-        }
     }
 
-    public class EmployeeList : List<Employee>
+    public class EmployeeList
     {
+        public List<Employee> EmpList = new List<Employee>();
+
+        private string csvFilePath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, "data.csv");
         public EmployeeList()
         {
-            string csvFilePath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, "data.csv");
             if (File.Exists(csvFilePath))
             {
-                using (var reader = new StreamReader("./data.csv"))
+                using (var reader = new StreamReader(csvFilePath))
                 using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                 {
-                    var records = csv.GetRecords<Employee>();
+                    EmpList = csv.GetRecords<Employee>().ToList();
                 }
             }
         }
 
-        public bool ContainsEmployeeWithID(string nameToCheck)
+        public bool ContainsEmployeeWithID(string idToCheck)
         {
-            return this.Any(employee => employee.ID.Equals(nameToCheck, StringComparison.OrdinalIgnoreCase));
+            return EmpList.Any(emp => emp.ID.Equals(idToCheck, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public void EmployeeWriter()
+        {
+            if (File.Exists(csvFilePath))
+            {
+                using (var writer = new StreamWriter(csvFilePath))
+                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                {
+                    csv.WriteRecords(EmpList);
+                }
+            }
+        }
+        public List<string> GetEmployeeNames()
+        {
+            return EmpList.Select(emp => emp.Name).ToList();
+        }
+
+        public List<string> GetAdminNames()
+        {
+            return EmpList.Where(emp => emp.CanReport).Select(emp => emp.Name).ToList();
         }
     }
-
-
-
 }

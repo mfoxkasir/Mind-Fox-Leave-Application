@@ -1,8 +1,8 @@
-Name, ID, CanReport, Earnedleave, CasualLeave, PersonalLeave
-Vicky, 0001, true, 12, 12, 2
-Gowtham, 0002, true, 12, 12, 2
-Subash, 0003, true, 12, 12, 2
-Jithish, 0004, false, 12, 12, 2
-Adithya, 0005, false, 12, 12, 2
-Yuvaraj, 0006, false, 12, 12, 2
-Kasir, 0007, false, 12, 12, 2
+Name,ID,CanReport,EarnedLeave,CasualLeave,PersonalLeave
+Vicky,0001,True,6,12,2
+Gowtham,0002,True,12,12,2
+Subash,0003,False,12,12,2
+Adithya,0004,False,12,12,2
+Raju,0005,False,12,12,2
+Yuvaraj,0006,False,12,12,2
+Kasir,0007,False,12,12,2

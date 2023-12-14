@@ -31,10 +31,18 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
+					
+					
 			<Grid.Resources>
 				
 				<!--  StackPanel Styles -->
 				<Style TargetType="StackPanel">
+					<Setter Property="VerticalAlignment" Value="Center"/>
+					<Setter Property="Margin" Value="10 0" />
+				</Style>
+
+				<!--  StackPanel Styles -->
+				<Style TargetType="Grid">
 					<Setter Property="VerticalAlignment" Value="Center"/>
 					<Setter Property="Margin" Value="10 0" />
 				</Style>
@@ -73,25 +81,25 @@
 							</ControlTemplate>
 						</Setter.Value>
 					</Setter>
+					<Setter Property="FontWeight" Value="DemiBold"/>
 				</Style>
-
 
 			</Grid.Resources>
             
             <!-- Employee Name -->
             <StackPanel Grid.Row="0" Grid.Column="0">
-                <Label>
-                    Employee Name:
-                </Label>
-                <TextBox Name="EmployeeName"/>
-            </StackPanel>
+				      <Label>
+					      Employee Name:
+				      </Label>
+				      <ComboBox IsEditable="True" x:Name="EmployeeName" GotFocus="EmployeeName_GotFocus" SelectionChanged="EmployeeName_SelectionChanged" LostFocus="EmployeeName_LostFocus" />
+			      </StackPanel>
             
             <!-- Employee ID -->
             <StackPanel Grid.Row="0" Grid.Column="1">
                 <Label>
                     Employee ID:
                 </Label>
-                <TextBox x:Name="EmployeeId" LostFocus="EmployeeId_LostFocus" />
+                <TextBox x:Name="EmployeeId" IsReadOnly="True" />
             </StackPanel>
 
             <!-- Reporting To -->
@@ -99,16 +107,16 @@
                 <Label>
                     Reporting To:
                 </Label>
-                <TextBox Name="ReportingTo"/>
-            </StackPanel>
+				<ComboBox IsEditable="True" x:Name="ReportingTo" GotFocus="ReportingTo_GotFocus" />
+			</StackPanel>
 
             <!-- From-To Date -->
             <StackPanel Grid.Row="1" Grid.Column="0">
                 <Label>
                     Date:
                 </Label>
-                <DatePicker Name="FromDate" Margin="0,0,0,5"/>
-                <DatePicker Name="ToDate"/>
+                <DatePicker x:Name="FromDate" Margin="0,0,0,5" SelectedDateChanged="FromDate_SelectedDateChanged" />
+                <DatePicker x:Name="ToDate" SelectedDateChanged="ToDate_SelectedDateChanged" />
             </StackPanel>
             
             <!-- Type of Leave -->
@@ -117,12 +125,8 @@
                     Type of Leave:
                 </Label>
                 <!-- ComboBox Name="LeaveType" ItemsSource="{Binding LeaveType}" -->
-                <ComboBox Name="LeaveType">
-                    <ComboBoxItem Content="Earned Leave"/>
-                    <ComboBoxItem Content="Casual Leave"/>
-                    <ComboBoxItem Content="Personal Leave"/>
-                </ComboBox>
-            </StackPanel>
+				        <ComboBox x:Name="LeaveType" DropDownOpened="LeaveType_DropDownOpened" SelectionChanged="LeaveType_SelectionChanged" />
+			       </StackPanel>
 
             <!-- Balance Card -->
             <StackPanel Grid.Row="1" Grid.Column="2">
@@ -149,9 +153,9 @@
                     <TextBlock Grid.Row="0"  Grid.Column="0" Text="EL" />
                     <TextBlock Grid.Row="0"  Grid.Column="1" Text="CL" />
                     <TextBlock Grid.Row="0"  Grid.Column="2" Text="PL" />
-                    <TextBlock Grid.Row="1"  Grid.Column="0" Text="{Binding EarnedLeave}" />
-                    <TextBlock Grid.Row="1"  Grid.Column="1" Text="{Binding CasualLeave}" />
-                    <TextBlock Grid.Row="1"  Grid.Column="2" Text="{Binding PersonalLeave}" />
+                    <TextBox Grid.Row="1"  Grid.Column="0" x:Name="EarnedLeave" Text="{Binding Path=EmpList.EarningLeave.ToString(), UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" />
+                    <TextBlock Grid.Row="1"  Grid.Column="1" x:Name="CasualLeave"/>
+                    <TextBlock Grid.Row="1"  Grid.Column="2" x:Name="PersonalLeave"/>
                 </Grid>
             </StackPanel>
 
@@ -168,7 +172,7 @@
 			<Grid.RowDefinitions>
 				<RowDefinition Height="*" />
 			</Grid.RowDefinitions>
-			<Button x:Name="Submit" Content="Submit" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,30"></Button>
+			<Button x:Name="Submit" Content="Submit" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,30" Click="Submit_Click" />
 		</Grid>
 			  
 			
