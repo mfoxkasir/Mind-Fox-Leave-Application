@@ -153,7 +153,7 @@
                     <TextBlock Grid.Row="0"  Grid.Column="0" Text="EL" />
                     <TextBlock Grid.Row="0"  Grid.Column="1" Text="CL" />
                     <TextBlock Grid.Row="0"  Grid.Column="2" Text="PL" />
-                    <TextBox Grid.Row="1"  Grid.Column="0" x:Name="EarnedLeave" Text="{Binding Path=EmpList.EarningLeave.ToString(), UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" />
+                    <TextBlock Grid.Row="1"  Grid.Column="0" x:Name="EarnedLeave" Text="{Binding EarnedLeave}" />
                     <TextBlock Grid.Row="1"  Grid.Column="1" x:Name="CasualLeave"/>
                     <TextBlock Grid.Row="1"  Grid.Column="2" x:Name="PersonalLeave"/>
                 </Grid>

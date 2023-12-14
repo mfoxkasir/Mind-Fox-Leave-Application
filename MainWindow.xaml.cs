@@ -54,7 +54,7 @@ namespace Mind_Fox_Leave_Application
                 {
                     SelectedEmployee = Emp;
                     EmployeeId.Text = Emp.ID;
-                    //EarnedLeave.Text = Emp.EarnedLeave.ToString();
+                    EarnedLeave.SetBinding(TextBlock.TextProperty, new Binding(Emp.EarnedLeave.ToString()));
                     CasualLeave.Text = Emp.CasualLeave.ToString();
                     PersonalLeave.Text = Emp.PersonalLeave.ToString();
                     break;
