@@ -87,7 +87,7 @@
 			</Grid.Resources>
             
             <!-- Employee Name -->
-            <StackPanel Grid.Row="0" Grid.Column="0">
+       <StackPanel Grid.Row="0" Grid.Column="0">
 				      <Label>
 					      Employee Name:
 				      </Label>
@@ -99,7 +99,7 @@
                 <Label>
                     Employee ID:
                 </Label>
-                <TextBox x:Name="EmployeeId" IsReadOnly="True" />
+				<TextBox x:Name="EmployeeId" IsReadOnly="True"  ToolTip="Test" Text="{Binding Path=ID, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
 
             <!-- Reporting To -->
@@ -151,21 +151,23 @@
                     </Grid.Resources>
 
                     <TextBlock Grid.Row="0"  Grid.Column="0" Text="EL" />
-                    <TextBlock Grid.Row="0"  Grid.Column="1" Text="CL" />
-                    <TextBlock Grid.Row="0"  Grid.Column="2" Text="PL" />
-                    <TextBlock Grid.Row="1"  Grid.Column="0" x:Name="EarnedLeave" Text="{Binding EarnedLeave}" />
-                    <TextBlock Grid.Row="1"  Grid.Column="1" x:Name="CasualLeave"/>
-                    <TextBlock Grid.Row="1"  Grid.Column="2" x:Name="PersonalLeave"/>
-                </Grid>
+										<TextBlock Grid.Row="0"  Grid.Column="1" Text="CL" />
+										<TextBlock Grid.Row="0"  Grid.Column="2" Text="PL" />
+										<TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Path=EarnedLeave, UpdateSourceTrigger=PropertyChanged}" />
+										<TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=CasualLeave, UpdateSourceTrigger=PropertyChanged}" />
+										<TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Path=PersonalLeave, UpdateSourceTrigger=PropertyChanged}" />
+
+				</Grid>
             </StackPanel>
 
 			<StackPanel  Grid.Row="2" Grid.ColumnSpan="3">
 				<Label>
 					Reason:
 				</Label>
-				<TextBox Name="Reason" MinHeight="50"/>
+				<TextBox x:Name="Reason" MinHeight="50"/>
 			</StackPanel>
-        </Grid>
+      
+				</Grid>
 
         <!-- Main Grid Submit button -->
 		<Grid Grid.Row="2">

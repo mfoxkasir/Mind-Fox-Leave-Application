@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,7 +41,6 @@ namespace Mind_Fox_Leave_Application
         // Variable for storing selected employee
         private Employee SelectedEmployee;
 
-        // Employee Name List Generation 
         private void EmployeeName_GotFocus(object sender, RoutedEventArgs e)
         {
             EmployeeName.ItemsSource = EmployeeNames;
@@ -47,18 +48,12 @@ namespace Mind_Fox_Leave_Application
 
         private void EmployeeName_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string EmpName = EmployeeName.SelectedItem as string;
-            foreach (Employee Emp in MindFox.EmpList)
+            if (EmployeeName.SelectedItem != null)
             {
-                if (Emp.Name == EmpName)
-                {
-                    SelectedEmployee = Emp;
-                    EmployeeId.Text = Emp.ID;
-                    EarnedLeave.SetBinding(TextBlock.TextProperty, new Binding(Emp.EarnedLeave.ToString()));
-                    CasualLeave.Text = Emp.CasualLeave.ToString();
-                    PersonalLeave.Text = Emp.PersonalLeave.ToString();
-                    break;
-                }
+                string EmpName = EmployeeName.SelectedItem as string;
+                Employee Emp = MindFox.EmpList.FirstOrDefault(emp => emp.Name == EmpName);
+                this.DataContext = Emp;
+                SelectedEmployee = Emp;
             }
         }
 
@@ -71,128 +66,169 @@ namespace Mind_Fox_Leave_Application
             }
         }
 
+        private List<string> adminNames = MindFox.GetAdminNames();
+
         private void ReportingTo_GotFocus(object sender, RoutedEventArgs e)
         {
-            List<string> EmployeeNames = MindFox.GetAdminNames();
-            ReportingTo.ItemsSource = EmployeeNames;
+            ReportingTo.ItemsSource = adminNames;
         }
 
         private void FromDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            DateTime thirtyDaysAgo = DateTime.Today.AddDays(-30);
-            int Days = DaysCalculator(); 
+            if (FromDate.SelectedDate != null)
+            {
+                int Days = DaysCalculator();
 
-            if (FromDate.SelectedDate < thirtyDaysAgo)
-            {
-                MessageBox.Show("Please select a date within the last 30 days.");
-                FromDate.SelectedDate = DateTime.Today;
-            }
-            else if (ToDate.SelectedDate < FromDate.SelectedDate)
-            {
-                MessageBox.Show("'To' date cannot be before than 'From' date.");
-                FromDate.SelectedDate = ToDate.SelectedDate;
-            }
-            else if (Days != 0 && LeaveType.SelectedItem != null && SelectedEmployee != null)
-            {
-                if (!LeaveValidityChecker(LeaveType.SelectedIndex, Days, SelectedEmployee))
+                DateTime thirtyDaysAgo = DateTime.Today.AddDays(-30);
+                if (FromDate.SelectedDate < thirtyDaysAgo)
                 {
-                    MessageBox.Show("This type of leave cannot be taken. Try Selecting different type.");
+                    MessageBox.Show("Please select a date within the last 30 days.");
+                    FromDate.SelectedDate = DateTime.Today;
+                    return;
+                }
+
+                if (Days < 1 && ToDate.SelectedDate != null)
+                {
+                    MessageBox.Show("'To' date cannot be before than 'From' date.");
+                    ToDate.SelectedDate = FromDate.SelectedDate;
+                }
+                else if (LeaveType.SelectedItem != null)
+                {
+                    if (!SelectedEmployee.LeaveValidityChecker(LeaveType.SelectedIndex, Days))
+                    {
+                        MessageBox.Show("This type of leave cannot be taken. Try Selecting different type.");
+                        FromDate.SelectedDate = ToDate.SelectedDate;
+                    }
                 }
             }
         }
 
         private void ToDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            int Days = DaysCalculator();
-            if (FromDate.SelectedDate == null) 
+            if (ToDate.SelectedDate != null)
             {
-                MessageBox.Show("Select 'From' date first.");
-                ToDate.SelectedDate = null;
-            }
-            else if (ToDate.SelectedDate < FromDate.SelectedDate)
-            {
-                MessageBox.Show("'To' date cannot be before than 'From' date.");
-                ToDate.SelectedDate = FromDate.SelectedDate;
-            }
-            else if (Days != 0 && LeaveType.SelectedItem != null && SelectedEmployee != null)
-            {
-                if (!LeaveValidityChecker(LeaveType.SelectedIndex, Days, SelectedEmployee))
+                int Days = DaysCalculator();
+
+                if (FromDate.SelectedDate == null)
                 {
-                    MessageBox.Show("This type of leave cannot be taken. Try Selecting different type.");
+                    MessageBox.Show("Select 'From' date first.");
+                    this.ToDate.SelectedDateChanged -= this.ToDate_SelectedDateChanged;
+                    ToDate.SelectedDate = null;
+                    this.ToDate.SelectedDateChanged += this.ToDate_SelectedDateChanged;
+                }
+                else if (Days < 1 && FromDate.SelectedDate != null)
+                {
+                    MessageBox.Show("'To' date cannot be before than 'From' date.");
+                    ToDate.SelectedDate = FromDate.SelectedDate;
+                }
+                else if (LeaveType.SelectedItem != null)
+                {
+                    if (!SelectedEmployee.LeaveValidityChecker(LeaveType.SelectedIndex, Days))
+                    {
+                        MessageBox.Show("This type of leave cannot be taken. Try Selecting different type.");
+                        ToDate.SelectedDate = FromDate.SelectedDate;
+                    }
                 }
             }
         }
 
-        private void Submit_Click(object sender, RoutedEventArgs e)
-        {
-            int Days = DaysCalculator();
-            if (EmployeeName.SelectedItem != null && ReportingTo.SelectedItem != null && FromDate.SelectedDate != null && ToDate.SelectedDate != null && LeaveType.SelectedItem != null)
-            {
-                LeaveCalculator(LeaveType.SelectedIndex, Days, SelectedEmployee);
-                MindFox.EmployeeWriter();
-                MessageBox.Show("Your Leave is approved.");
-            }
-        }
+        private List<string> leaveTypes = new List<string>() { "Earned Leave", "Casual Leave", "Personal Leave" };
 
         private void LeaveType_DropDownOpened(object sender, EventArgs e)
         {
-            List<string> leaveTypes = new List<string>() { "Earned Leave", "Casual Leave", "Personal Leave" };
             LeaveType.ItemsSource = leaveTypes;
         }
 
         private void LeaveType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            int Days = DaysCalculator();
-            if (Days != 0 && SelectedEmployee != null)
+            if (LeaveType.SelectedItem != null)
             {
-                if (!LeaveValidityChecker (LeaveType.SelectedIndex, Days, SelectedEmployee))
+                int Days = DaysCalculator();
+
+                if (SelectedEmployee == null)
                 {
-                    MessageBox.Show("This type of leave cannot be taken. Try Selecting different type.");
+                    MessageBox.Show("Select the Employee Name.");
+                    this.LeaveType.SelectionChanged -= this.LeaveType_SelectionChanged;
                     LeaveType.SelectedItem = null;
+                    this.LeaveType.SelectionChanged += this.LeaveType_SelectionChanged;
+                    return;
+                }
+
+                if (Days > 0)
+                {
+                    if (!SelectedEmployee.LeaveValidityChecker(LeaveType.SelectedIndex, Days))
+                    {
+                        MessageBox.Show("This type of leave cannot be taken. Try Selecting different type.");
+                        this.LeaveType.SelectionChanged -= this.LeaveType_SelectionChanged;
+                        LeaveType.SelectedItem = null;
+                        this.LeaveType.SelectionChanged += this.LeaveType_SelectionChanged;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please select both From and To dates.");
+                    this.LeaveType.SelectionChanged -= this.LeaveType_SelectionChanged;
+                    LeaveType.SelectedItem = null;
+                    this.LeaveType.SelectionChanged += this.LeaveType_SelectionChanged;
                 }
             }
-            else if (SelectedEmployee == null)
+        }
+
+        LeaveLogger log = new LeaveLogger();
+        private void Submit_Click(object sender, RoutedEventArgs e)
+        {
+            int Days = DaysCalculator();
+
+            if (EmployeeName.SelectedItem != null && ReportingTo.SelectedItem != null && FromDate.SelectedDate != null && ToDate.SelectedDate != null && LeaveType.SelectedItem != null)
             {
-                MessageBox.Show("Select the Employee Name.");
-                LeaveType.SelectedItem = null;
-            }
-            else
-            {
-                MessageBox.Show("Please select both From and To dates.");
-                LeaveType.SelectedItem = null;
+                string report = $"Employee: {EmployeeName.SelectedItem} (ID: {EmployeeId.Text})\r\nLeave Type: {LeaveType.SelectedItem}\r\nNumber of Days: {Days}\r\nFrom: {FromDate.SelectedDate?.ToShortDateString()} To: {ToDate.SelectedDate?.ToShortDateString()}\r\nReporting to: {ReportingTo.SelectedItem}\r\nReason: {Reason.Text}";
+                string confirmMessage = $"Confirmation:\r\n{report}\r\n\r\nAre you sure you want to request this leave?";
+                string title = "Confirmation Window";
+                MessageBoxButton buttons = MessageBoxButton.YesNo;
+                MessageBoxResult result = MessageBox.Show(confirmMessage, title, buttons);
+                
+                if (result == MessageBoxResult.Yes)
+                {
+                    SelectedEmployee.LeaveDeductor(LeaveType.SelectedIndex, Days);
+                    MindFox.LeaveUpdater();
+                    log.LogLeave(report);
+                    MessageBox.Show("Your Leave is approved.");
+                    this.DataContext = null;
+                    ResetUIComponents(this);
+                }
             }
         }
 
-        private bool LeaveValidityChecker(int leaveType, int days, Employee emp)
-        {
-            switch (leaveType)
-            {
-                case 0:
-                    return emp.EarnedLeave >= days;
-                case 1:
-                    return emp.CasualLeave >= days;
-                case 2:
-                    return emp.PersonalLeave >= days;
-                default:
-                    return false;
-            }
-        }
+        //private bool LeaveValidityChecker(int leaveType, int days, Employee emp)
+        //{
+        //    switch (leaveType)
+        //    {
+        //        case 0:
+        //            return emp.EarnedLeave >= days;
+        //        case 1:
+        //            return emp.CasualLeave >= days;
+        //        case 2:
+        //            return emp.PersonalLeave >= days;
+        //        default:
+        //            return false;
+        //    }
+        //}
 
-        private void LeaveCalculator(int leaveType, int days, Employee emp)
-        {
-            switch (leaveType)
-            {
-                case 0:
-                    emp.EarnedLeave -= days;
-                    break;
-                case 1:
-                    emp.CasualLeave -= days;
-                    break;
-                case 2:
-                    emp.PersonalLeave -= days;
-                    break;
-            }
-        }
+        //private void LeaveDeductor(int leaveType, int days, Employee emp)
+        //{
+        //    switch (leaveType)
+        //    {
+        //        case 0:
+        //            emp.EarnedLeave -= days;
+        //            break;
+        //        case 1:
+        //            emp.CasualLeave -= days;
+        //            break;
+        //        case 2:
+        //            emp.PersonalLeave -= days;
+        //            break;
+        //    }
+        //}
 
         private int DaysCalculator()
         {
@@ -200,10 +236,34 @@ namespace Mind_Fox_Leave_Application
             {
                 int Days = (ToDate.SelectedDate.Value - FromDate.SelectedDate.Value).Days + 1;
                 return Days;
-            } 
+            }
             else
             {
                 return 0;
+            }
+        }
+
+        private void ResetUIComponents(DependencyObject depObj)
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+            {
+                var child = VisualTreeHelper.GetChild(depObj, i);
+
+                if (child is TextBox textBox)
+                {
+                    textBox.Text = string.Empty; // Reset textboxes
+                }
+                else if (child is ComboBox checkBox)
+                {
+                    checkBox.SelectedItem = null; // Reset checkboxes
+                }
+                else if (child is DatePicker datePicker)
+                {
+                    datePicker.SelectedDate = null; // Reset DatePickers
+                }
+                // Add conditions for other types of UI components (labels, dropdowns, etc.)
+
+                ResetUIComponents(child);
             }
         }
     }
