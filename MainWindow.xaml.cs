@@ -27,23 +27,30 @@ namespace Mind_Fox_Leave_Application
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        #region Private variables
+
+        // Fetch EmployeeList from CSV
+        private EmployeeList mindFox;
+
+        // Store selected employee
+        private Employee currentEmployee;
+
+        private LeaveLogger log;
+
+        #endregion
+
+        #region Public properties
+
+
+        #endregion
+
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        // Fetch EmployeeList from CSV
-        static private EmployeeList MindFox = new EmployeeList();
-
-        // Fetch Employee Names
-        private List<string> EmployeeNames = MindFox.GetEmployeeNames();
-
-        // Variable for storing selected employee
-        private Employee SelectedEmployee;
-
-        private void EmployeeName_GotFocus(object sender, RoutedEventArgs e)
-        {
-            EmployeeName.ItemsSource = EmployeeNames;
+            this.mindFox = new EmployeeList("data.csv");
+            this.log = new LeaveLogger();
+            this.DataContext = this.mindFox;
         }
 
         private void EmployeeName_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -51,9 +58,9 @@ namespace Mind_Fox_Leave_Application
             if (EmployeeName.SelectedItem != null)
             {
                 string EmpName = EmployeeName.SelectedItem as string;
-                Employee Emp = MindFox.EmpList.FirstOrDefault(emp => emp.Name == EmpName);
-                this.DataContext = Emp;
-                SelectedEmployee = Emp;
+                this.mindFox.CurrentEmployee = null;
+                this.mindFox.CurrentEmployee = this.mindFox.ListofEmployees.FirstOrDefault(emp => emp.Name == EmpName);
+                currentEmployee = this.mindFox.CurrentEmployee;
             }
         }
 
@@ -64,13 +71,6 @@ namespace Mind_Fox_Leave_Application
                 EmployeeName.Text = null;
                 EmployeeId.Text = null;
             }
-        }
-
-        private List<string> adminNames = MindFox.GetAdminNames();
-
-        private void ReportingTo_GotFocus(object sender, RoutedEventArgs e)
-        {
-            ReportingTo.ItemsSource = adminNames;
         }
 
         private void FromDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
@@ -94,7 +94,7 @@ namespace Mind_Fox_Leave_Application
                 }
                 else if (LeaveType.SelectedItem != null)
                 {
-                    if (!SelectedEmployee.LeaveValidityChecker(LeaveType.SelectedIndex, Days))
+                    if (!currentEmployee.LeaveValidityChecker(LeaveType.SelectedIndex, Days))
                     {
                         MessageBox.Show("This type of leave cannot be taken. Try Selecting different type.");
                         FromDate.SelectedDate = ToDate.SelectedDate;
@@ -123,7 +123,7 @@ namespace Mind_Fox_Leave_Application
                 }
                 else if (LeaveType.SelectedItem != null)
                 {
-                    if (!SelectedEmployee.LeaveValidityChecker(LeaveType.SelectedIndex, Days))
+                    if (!currentEmployee.LeaveValidityChecker(LeaveType.SelectedIndex, Days))
                     {
                         MessageBox.Show("This type of leave cannot be taken. Try Selecting different type.");
                         ToDate.SelectedDate = FromDate.SelectedDate;
@@ -132,20 +132,13 @@ namespace Mind_Fox_Leave_Application
             }
         }
 
-        private List<string> leaveTypes = new List<string>() { "Earned Leave", "Casual Leave", "Personal Leave" };
-
-        private void LeaveType_DropDownOpened(object sender, EventArgs e)
-        {
-            LeaveType.ItemsSource = leaveTypes;
-        }
-
         private void LeaveType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (LeaveType.SelectedItem != null)
             {
                 int Days = DaysCalculator();
 
-                if (SelectedEmployee == null)
+                if (currentEmployee == null)
                 {
                     MessageBox.Show("Select the Employee Name.");
                     this.LeaveType.SelectionChanged -= this.LeaveType_SelectionChanged;
@@ -156,7 +149,7 @@ namespace Mind_Fox_Leave_Application
 
                 if (Days > 0)
                 {
-                    if (!SelectedEmployee.LeaveValidityChecker(LeaveType.SelectedIndex, Days))
+                    if (!currentEmployee.LeaveValidityChecker(LeaveType.SelectedIndex, Days))
                     {
                         MessageBox.Show("This type of leave cannot be taken. Try Selecting different type.");
                         this.LeaveType.SelectionChanged -= this.LeaveType_SelectionChanged;
@@ -174,7 +167,6 @@ namespace Mind_Fox_Leave_Application
             }
         }
 
-        LeaveLogger log = new LeaveLogger();
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
             int Days = DaysCalculator();
@@ -189,46 +181,15 @@ namespace Mind_Fox_Leave_Application
                 
                 if (result == MessageBoxResult.Yes)
                 {
-                    SelectedEmployee.LeaveDeductor(LeaveType.SelectedIndex, Days);
-                    MindFox.LeaveUpdater();
+                    currentEmployee.LeaveDeductor(LeaveType.SelectedIndex, Days);
+                    mindFox.csvLeaveUpdater();
                     log.LogLeave(report);
                     MessageBox.Show("Your Leave is approved.");
-                    this.DataContext = null;
-                    ResetUIComponents(this);
+                    //this.DataContext = null;
+                    //ResetUIComponents(this);
                 }
             }
         }
-
-        //private bool LeaveValidityChecker(int leaveType, int days, Employee emp)
-        //{
-        //    switch (leaveType)
-        //    {
-        //        case 0:
-        //            return emp.EarnedLeave >= days;
-        //        case 1:
-        //            return emp.CasualLeave >= days;
-        //        case 2:
-        //            return emp.PersonalLeave >= days;
-        //        default:
-        //            return false;
-        //    }
-        //}
-
-        //private void LeaveDeductor(int leaveType, int days, Employee emp)
-        //{
-        //    switch (leaveType)
-        //    {
-        //        case 0:
-        //            emp.EarnedLeave -= days;
-        //            break;
-        //        case 1:
-        //            emp.CasualLeave -= days;
-        //            break;
-        //        case 2:
-        //            emp.PersonalLeave -= days;
-        //            break;
-        //    }
-        //}
 
         private int DaysCalculator()
         {

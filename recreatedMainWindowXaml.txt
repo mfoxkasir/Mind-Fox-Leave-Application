@@ -1,4 +1,4 @@
-﻿<Window x:Class="Mind_Fox_Leave_Application.MainWindow"
+<Window x:Class="Mind_Fox_Leave_Application.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -33,56 +33,12 @@
 				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
 
-			<Grid.Resources>
-				<Style TargetType="StackPanel">
-					<Setter Property="VerticalAlignment" Value="Center"/>
-					<Setter Property="Margin" Value="10 0" />
-				</Style>
-
-				<Style TargetType="Label">
-					<Setter Property="FontWeight" Value="DemiBold" />
-				</Style>
-
-				<Style TargetType="TextBox">
-					<Setter Property="MinHeight" Value="22" />
-					<Setter Property="Template">
-						<Setter.Value>
-							<ControlTemplate TargetType="TextBox">
-								<Border x:Name="border"
-												BorderBrush="Gray"
-												BorderThickness="1"
-												CornerRadius="3">
-									<Border x:Name="innerBorder"
-													Margin="1"
-													Background="White"
-													CornerRadius="3">
-										<ScrollViewer x:Name="PART_ContentHost"/>
-									</Border>
-								</Border>
-								<ControlTemplate.Triggers>
-									<Trigger Property="IsFocused" Value="True">
-										<Setter TargetName="border" Property="BorderBrush" Value="DarkOrange"/>
-										<Setter TargetName="border" Property="Effect">
-											<Setter.Value>
-												<DropShadowEffect ShadowDepth="3" Color="Black" Opacity=".9"/>
-											</Setter.Value>
-										</Setter>
-									</Trigger>
-								</ControlTemplate.Triggers>
-							</ControlTemplate>
-						</Setter.Value>
-					</Setter>
-					<Setter Property="FontWeight" Value="DemiBold"/>
-				</Style>
-
-			</Grid.Resources>
-
 			<!-- Employee Name -->
 			<StackPanel Grid.Row="0" Grid.Column="0">
 				<Label>
 					Employee Name:
 				</Label>
-				<ComboBox IsEditable="True" x:Name="EmployeeName" ItemsSource="{Binding Path=EmployeeNames}" SelectedItem="{Binding Path=CurrentEmployee.Name}" SelectionChanged="EmployeeName_SelectionChanged" LostFocus="EmployeeName_LostFocus" />
+				<ComboBox IsEditable="True" x:Name="EmployeeName" GotFocus="EmployeeName_GotFocus" SelectionChanged="EmployeeName_SelectionChanged" LostFocus="EmployeeName_LostFocus" />
 			</StackPanel>
 
 			<!-- Employee ID -->
@@ -90,7 +46,7 @@
 				<Label>
 					Employee ID:
 				</Label>
-				<TextBox x:Name="EmployeeId" IsReadOnly="True"  ToolTip="Test" Text="{Binding Path=CurrentEmployee.ID, UpdateSourceTrigger=PropertyChanged}"/>
+				<TextBox x:Name="EmployeeId" IsReadOnly="True"  ToolTip="Test" Text="{Binding Path=ID, UpdateSourceTrigger=PropertyChanged}"/>
 			</StackPanel>
 
 			<!-- Reporting To -->
@@ -98,7 +54,7 @@
 				<Label>
 					Reporting To:
 				</Label>
-				<ComboBox IsEditable="True" x:Name="ReportingTo" ItemsSource="{Binding Path=AdminNames}" />
+				<ComboBox IsEditable="True" x:Name="ReportingTo" GotFocus="ReportingTo_GotFocus" />
 			</StackPanel>
 
 			<!-- From-To Date -->
@@ -115,7 +71,7 @@
 				<Label>
 					Type of Leave:
 				</Label>
-				<ComboBox x:Name="LeaveType" ItemsSource="{Binding LeaveTypes}" SelectionChanged="LeaveType_SelectionChanged" />
+				<ComboBox x:Name="LeaveType" DropDownOpened="LeaveType_DropDownOpened" SelectionChanged="LeaveType_SelectionChanged" />
 			</StackPanel>
 
 			<!-- Balance Card -->
@@ -123,22 +79,32 @@
 				<Label>
 					Leave Balance:
 				</Label>
+				
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*" />
+						<RowDefinition Height="*" />
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
 
-				<!-- Leave Balance -->
-				<UniformGrid Rows="2" Columns="3">
-					<UniformGrid.Resources>
+					<Grid.Resources>
 						<Style TargetType="TextBlock">
 							<Setter Property="HorizontalAlignment" Value="Center" />
 						</Style>
-					</UniformGrid.Resources>
+					</Grid.Resources>
 
-					<TextBlock Text="EL" />
-					<TextBlock Text="CL" />
-					<TextBlock Text="PL" />
-					<TextBlock Text="{Binding Path=CurrentEmployee.EarnedLeave, UpdateSourceTrigger=PropertyChanged}" />
-					<TextBlock Text="{Binding Path=CurrentEmployee.CasualLeave, UpdateSourceTrigger=PropertyChanged}" />
-					<TextBlock Text="{Binding Path=CurrentEmployee.PersonalLeave, UpdateSourceTrigger=PropertyChanged}" />
-				</UniformGrid>
+					<TextBlock Grid.Row="0"  Grid.Column="0" Text="EL" />
+					<TextBlock Grid.Row="0"  Grid.Column="1" Text="CL" />
+					<TextBlock Grid.Row="0"  Grid.Column="2" Text="PL" />
+					<TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Path=EarnedLeave, UpdateSourceTrigger=PropertyChanged}" />
+					<TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=CasualLeave, UpdateSourceTrigger=PropertyChanged}" />
+					<TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Path=PersonalLeave, UpdateSourceTrigger=PropertyChanged}" />
+
+				</Grid>
 			</StackPanel>
 
 			<StackPanel  Grid.Row="2" Grid.ColumnSpan="3">

@@ -6,11 +6,15 @@ using System.IO;
 using System.Linq;
 using System.ComponentModel;
 using System.Windows.Markup;
+using System.Xml.Linq;
 
 namespace Mind_Fox_data
 {
     public class Employee : INotifyPropertyChanged
     {
+
+        #region Eventhandlers
+
         // Implement PropertyChanged event
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -19,6 +23,10 @@ namespace Mind_Fox_data
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
+
+        #region Public Properties
 
         private string name;
         public string Name
@@ -104,6 +112,10 @@ namespace Mind_Fox_data
             }
         }
 
+        #endregion
+
+        #region Public methods
+
         public void LeaveDeductor(int leaveType, int days)
         {
             switch (leaveType)
@@ -119,6 +131,7 @@ namespace Mind_Fox_data
                     break;
             }
         }
+
         public bool LeaveValidityChecker(int leaveType, int days)
         {
             switch (leaveType)
@@ -135,59 +148,159 @@ namespace Mind_Fox_data
         }
     }
 
-    public class EmployeeList
-    {
-        public List<Employee> EmpList = new List<Employee>();
+    #endregion
 
-        private string csvFilePath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, "data.csv");
-        public EmployeeList()
+    public class EmployeeList : INotifyPropertyChanged
+    {
+
+        #region EventHandlers
+
+        // Implement PropertyChanged event
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // Method to raise PropertyChanged event
+        protected void OnPropertyChanged(string propertyName)
         {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
+
+        #region Public variables
+
+        public List<Employee> ListofEmployees = new List<Employee>();
+
+        #endregion
+
+        #region Private variables
+
+        private string csvFilePath;
+
+        #endregion
+
+        #region Public properties
+
+        public List<string> EmployeeNames
+        {
+            get
+            {
+               return this.GetEmployeeNames();
+            }
+        }
+
+        public List<string> AdminNames
+        {
+            get
+            {
+                return this.GetAdminNames();
+            }
+        }
+
+        public List<string> LeaveTypes
+        {
+            get
+            {
+                return this.GetLeaveTypes();
+            }
+        }
+
+
+        private Employee currentEmployee;
+        public Employee CurrentEmployee {
+            get { return currentEmployee; }
+            set
+            {
+                if (value != currentEmployee)
+                {
+                    currentEmployee = value;
+                    OnPropertyChanged(nameof(CurrentEmployee));
+                }
+            }
+        }
+
+        #endregion
+
+
+        public EmployeeList(string fileName)
+        {
+            csvFilePath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, fileName);
+
             if (File.Exists(csvFilePath))
             {
                 using (var reader = new StreamReader(csvFilePath))
                 using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                 {
-                    EmpList = csv.GetRecords<Employee>().ToList();
+                    ListofEmployees = csv.GetRecords<Employee>().ToList();
                 }
             }
         }
 
+        #region Public methods
+
         public bool ContainsEmployeeWithID(string idToCheck)
         {
-            return EmpList.Any(emp => emp.ID.Equals(idToCheck, StringComparison.OrdinalIgnoreCase));
+            return ListofEmployees.Any(emp => emp.ID.Equals(idToCheck, StringComparison.OrdinalIgnoreCase));
         }
 
-        public void LeaveUpdater()
+        public void csvLeaveUpdater()
         {
             if (File.Exists(csvFilePath))
             {
                 using (var writer = new StreamWriter(csvFilePath))
                 using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
                 {
-                    csv.WriteRecords(EmpList);
+                    csv.WriteRecords(ListofEmployees);
                 }
             }
         }
-        public List<string> GetEmployeeNames()
+
+        #endregion
+
+        #region Private methods
+
+        private List<string> GetEmployeeNames()
         {
-            return EmpList.Select(emp => emp.Name).ToList();
+            return ListofEmployees.Select(emp => emp.Name).ToList();
         }
 
-        public List<string> GetAdminNames()
+        private List<string> GetAdminNames()
         {
-            return EmpList.Where(emp => emp.CanReport).Select(emp => emp.Name).ToList();
+            return ListofEmployees.Where(emp => emp.CanReport).Select(emp => emp.Name).ToList();
         }
+
+        private List<string> GetLeaveTypes()
+        {
+            return new List<string>() { "Earned Leave", "Casual Leave", "Personal Leave" };
+        }
+
+        #endregion
+
+        //private Employee GetCurrentEmployee(string empName)
+        //{
+        //    return ListofEmployees.FirstOrDefault(emp => emp.Name.Equals(empName, StringComparison.OrdinalIgnoreCase));
+        //}
     }
-}
 
-public class LeaveLogger
-{
-    private string logFilePath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, "log.txt");
-    public void LogLeave(string message)
+
+    public class LeaveLogger
     {
-        using (StreamWriter writer = File.AppendText(logFilePath))
+
+        #region Private variable
+
+        private string logFilePath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, "log.txt");
+
+        #endregion
+
+        #region Public methods
+        public void LogLeave(string message)
         {
-            writer.WriteLine($"{DateTime.Now}:\r\n{message}\r\n");
+            using (StreamWriter writer = File.AppendText(logFilePath))
+            {
+                writer.WriteLine($"{DateTime.Now}:\r\n{message}\r\n");
+            }
         }
+
+        #endregion
     }
+
 }

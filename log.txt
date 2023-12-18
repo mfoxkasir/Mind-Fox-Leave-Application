@@ -1,1 +1,73 @@
 
+12/18/2023 9:08:33 PM:
+Employee: Vicky (ID: 0001)
+Leave Type: Earned Leave
+Number of Days: 1
+From: 12/19/2023 To: 12/19/2023
+Reporting to: Vicky
+Reason: 
+
+12/18/2023 9:09:59 PM:
+Employee: Vicky (ID: 0001)
+Leave Type: Casual Leave
+Number of Days: 2
+From: 12/19/2023 To: 12/20/2023
+Reporting to: Vicky
+Reason: 
+
+12/18/2023 9:12:44 PM:
+Employee: Vicky (ID: 0001)
+Leave Type: Earned Leave
+Number of Days: 1
+From: 12/19/2023 To: 12/19/2023
+Reporting to: Vicky
+Reason: 
+
+12/18/2023 9:39:46 PM:
+Employee: Vicky (ID: 0001)
+Leave Type: Earned Leave
+Number of Days: 2
+From: 12/19/2023 To: 12/20/2023
+Reporting to: Vicky
+Reason: 
+
+12/18/2023 9:41:17 PM:
+Employee: Vicky (ID: 0001)
+Leave Type: Casual Leave
+Number of Days: 2
+From: 12/19/2023 To: 12/20/2023
+Reporting to: Vicky
+Reason: 
+
+12/18/2023 9:58:11 PM:
+Employee: Vicky (ID: 0001)
+Leave Type: Earned Leave
+Number of Days: 2
+From: 12/19/2023 To: 12/20/2023
+Reporting to: Vicky
+Reason: 
+
+12/18/2023 9:59:49 PM:
+Employee: Vicky (ID: 0001)
+Leave Type: Personal Leave
+Number of Days: 2
+From: 12/21/2023 To: 12/22/2023
+Reporting to: Gowtham
+Reason: 
+
+12/18/2023 10:02:34 PM:
+Employee: Vicky (ID: 0001)
+Leave Type: Earned Leave
+Number of Days: 1
+From: 12/19/2023 To: 12/19/2023
+Reporting to: Vicky
+Reason: 
+
+12/18/2023 10:06:28 PM:
+Employee: Gowtham (ID: 0002)
+Leave Type: Casual Leave
+Number of Days: 1
+From: 12/20/2023 To: 12/20/2023
+Reporting to: Vicky
+Reason: 
+
