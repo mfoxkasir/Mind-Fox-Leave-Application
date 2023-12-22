@@ -1,0 +1,152 @@
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+
+		<!-- Title -->
+		<Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="16">
+			Mind Fox Leave Form
+		</Label>
+
+		<!-- Form -->
+		<Grid Grid.Row="1" >
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*" />
+				<RowDefinition Height="*" />
+				<RowDefinition Height="*" />
+			</Grid.RowDefinitions>
+
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+
+			<Grid.Resources>
+				<Style TargetType="StackPanel">
+					<Setter Property="VerticalAlignment" Value="Center"/>
+					<Setter Property="Margin" Value="10 0" />
+				</Style>
+
+				<Style TargetType="Label">
+					<Setter Property="FontWeight" Value="DemiBold" />
+				</Style>
+
+				<Style TargetType="TextBox">
+					<Setter Property="MinHeight" Value="22" />
+					<Setter Property="Template">
+						<Setter.Value>
+							<ControlTemplate TargetType="TextBox">
+								<Border x:Name="border"
+												BorderBrush="Gray"
+												BorderThickness="1"
+												CornerRadius="3">
+									<Border x:Name="innerBorder"
+													Margin="1"
+													Background="White"
+													CornerRadius="3">
+										<ScrollViewer x:Name="PART_ContentHost"/>
+									</Border>
+								</Border>
+								<ControlTemplate.Triggers>
+									<Trigger Property="IsFocused" Value="True">
+										<Setter TargetName="border" Property="BorderBrush" Value="DarkOrange"/>
+										<Setter TargetName="border" Property="Effect">
+											<Setter.Value>
+												<DropShadowEffect ShadowDepth="3" Color="Black" Opacity=".9"/>
+											</Setter.Value>
+										</Setter>
+									</Trigger>
+								</ControlTemplate.Triggers>
+							</ControlTemplate>
+						</Setter.Value>
+					</Setter>
+					<Setter Property="FontWeight" Value="DemiBold"/>
+				</Style>
+
+			</Grid.Resources>
+
+			<!-- Employee Name -->
+			<StackPanel Grid.Row="0" Grid.Column="0">
+				<Label>
+					Employee Name:
+				</Label>
+				<ComboBox IsEditable="True" x:Name="EmployeeName" ItemsSource="{Binding Path=EmployeeNames}" SelectedItem="{Binding Path=CurrentEmployee.Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="EmployeeDetail_SelectionChanged" LostFocus="EmployeeName_LostFocus" />
+			</StackPanel>
+
+			<!-- Employee ID -->
+			<StackPanel Grid.Row="0" Grid.Column="1">
+				<Label>
+					Employee ID:
+				</Label>
+				<TextBox x:Name="EmployeeId" IsReadOnly="True"  ToolTip="Test" Text="{Binding Path=CurrentEmployee.ID, UpdateSourceTrigger=PropertyChanged}"/>
+			</StackPanel>
+
+			<!-- Reporting To -->
+			<StackPanel Grid.Row="0" Grid.Column="2">
+				<Label>
+					Reporting To:
+				</Label>
+				<ComboBox IsEditable="True" x:Name="ReportingTo" ItemsSource="{Binding Path=AdminNames}" />
+			</StackPanel>
+
+			<!-- From-To Date -->
+			<StackPanel Grid.Row="1" Grid.Column="0">
+				<Label>
+					Date:
+				</Label>
+				<DatePicker x:Name="FromDate" Margin="0,0,0,5" SelectedDateChanged="FromDate_SelectedDateChanged" />
+				<DatePicker x:Name="ToDate" SelectedDateChanged="ToDate_SelectedDateChanged" />
+			</StackPanel>
+
+			<!-- Type of Leave -->
+			<StackPanel Grid.Row="1" Grid.Column="1">
+				<Label>
+					Type of Leave:
+				</Label>
+				<ComboBox x:Name="LeaveType" ItemsSource="{Binding LeaveTypes}" SelectionChanged="LeaveType_SelectionChanged" />
+			</StackPanel>
+
+			<!-- Balance Card -->
+			<StackPanel Grid.Row="1" Grid.Column="2">
+				<Label>
+					Leave Balance:
+				</Label>
+
+				<!-- Leave Balance -->
+				<UniformGrid Rows="2" Columns="3">
+					<UniformGrid.Resources>
+						<Style TargetType="TextBlock">
+							<Setter Property="HorizontalAlignment" Value="Center" />
+						</Style>
+					</UniformGrid.Resources>
+
+					<TextBlock Text="EL" />
+					<TextBlock Text="CL" />
+					<TextBlock Text="PL" />
+					<TextBlock Text="{Binding Path=CurrentEmployee.EarnedLeave, UpdateSourceTrigger=PropertyChanged}" />
+					<TextBlock Text="{Binding Path=CurrentEmployee.CasualLeave, UpdateSourceTrigger=PropertyChanged}" />
+					<TextBlock Text="{Binding Path=CurrentEmployee.PersonalLeave, UpdateSourceTrigger=PropertyChanged}" />
+				</UniformGrid>
+			</StackPanel>
+
+			<StackPanel  Grid.Row="2" Grid.ColumnSpan="3">
+				<Label>
+					Reason:
+				</Label>
+				<TextBox x:Name="Reason" MinHeight="50"/>
+			</StackPanel>
+
+		</Grid>
+
+		<!-- Submit button -->
+		<Grid Grid.Row="2">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*" />
+			</Grid.RowDefinitions>
+			<Button x:Name="Submit" Content="Submit" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,30" Click="Submit_Click" />
+		</Grid>
+
+	</Grid>

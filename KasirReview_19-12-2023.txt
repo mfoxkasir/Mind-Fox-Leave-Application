@@ -1,0 +1,25 @@
+Completed:
+C# Syntax and concepts of oops
+Features of Oops and .Net framework and WPF and Intro to Visual Studio
+concepts of UI components and predefined Xaml Tags and triggers and bindings.
+Polymorphism-based sample application (resides in Subash's laptop).
+Constructing UI using predefined XAML tags (started building UI of Mind Fox Leave Form).
+Concepts of delegation, event, custom event and event handlers, and the relation between delegation and function pointers.
+Completed construction of Mind Fox  LF UI (Non-structurally and didn't use bindings).
+Started building the backend of Mind Fox LF (partially finished).
+Completed the Backend of Mind Fox LF (without using bindings) and introduced to the usage of LINQ.
+Expanded the functionality to maintain (reading and updating) the data in the CSV file.
+Also logging the details into a log file.
+Fixed the corner cases (where the user might tamper) in the app (still not binded the object in the UI)
+Started constructing custom tags (ComboBox) and feedback text, but required to bind the properties of the object in the UI)
+Usage of resource dictionary files and user control files.
+The backend code was reviewed and updates were given and implemented the following:
+Restructuring the entire codebase and use bindings as data context with the master object.
+Code segregation into regions and coding standards. 
+Custom Event Handlers in the classes and two-way bindings.
+
+Ongoing:
+Debugging after restructuring the entire code base.
+Implementing the bindings wherever required.
+Custom tags such as combobox, datepicker, buttons and feedback text.
+Login page implementation.

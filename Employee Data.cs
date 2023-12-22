@@ -8,7 +8,7 @@ using System.ComponentModel;
 using System.Windows.Markup;
 using System.Xml.Linq;
 
-namespace Mind_Fox_data
+namespace Mind_Fox_Leave_Application
 {
     public class Employee : INotifyPropertyChanged
     {
@@ -26,7 +26,7 @@ namespace Mind_Fox_data
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         private string name;
         public string Name
@@ -146,9 +146,9 @@ namespace Mind_Fox_data
                     return false;
             }
         }
-    }
 
-    #endregion
+        #endregion
+    }
 
     public class EmployeeList : INotifyPropertyChanged
     {
@@ -168,7 +168,7 @@ namespace Mind_Fox_data
 
         #region Public variables
 
-        public List<Employee> ListofEmployees = new List<Employee>();
+        public List<Employee> ListofEmployees;
 
         #endregion
 
@@ -178,7 +178,7 @@ namespace Mind_Fox_data
 
         #endregion
 
-        #region Public properties
+        #region Properties
 
         public List<string> EmployeeNames
         {
@@ -196,11 +196,12 @@ namespace Mind_Fox_data
             }
         }
 
+        private List<string> leaveTypes = new List<string>() { "Earned Leave", "Casual Leave", "Personal Leave" };
         public List<string> LeaveTypes
         {
             get
             {
-                return this.GetLeaveTypes();
+                return leaveTypes;
             }
         }
 
@@ -220,6 +221,7 @@ namespace Mind_Fox_data
 
         #endregion
 
+        #region Constructor
 
         public EmployeeList(string fileName)
         {
@@ -234,6 +236,8 @@ namespace Mind_Fox_data
                 }
             }
         }
+
+        #endregion
 
         #region Public methods
 
@@ -268,17 +272,7 @@ namespace Mind_Fox_data
             return ListofEmployees.Where(emp => emp.CanReport).Select(emp => emp.Name).ToList();
         }
 
-        private List<string> GetLeaveTypes()
-        {
-            return new List<string>() { "Earned Leave", "Casual Leave", "Personal Leave" };
-        }
-
         #endregion
-
-        //private Employee GetCurrentEmployee(string empName)
-        //{
-        //    return ListofEmployees.FirstOrDefault(emp => emp.Name.Equals(empName, StringComparison.OrdinalIgnoreCase));
-        //}
     }
 
 

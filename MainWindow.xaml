@@ -5,159 +5,50 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Mind_Fox_Leave_Application"
         mc:Ignorable="d"
-        Title="Mind Fox Leave Application" Height="450" Width="800">
+        Title="Mind Fox HR Management" Height="450" Width="800">
 
-	<Grid>
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Dictionary1.xaml"/>
+				<!-- Add other merged dictionaries if any -->
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Window.Resources>
+	
+	<!--<Frame x:Name="MainFrame" />-->
+	<Grid Style="{StaticResource LoginBGStyle}">
 		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="*" />
-			<RowDefinition Height="Auto" />
+			<RowDefinition Height="35*" />
+			<RowDefinition Height="65*" />
+			<RowDefinition Height="auto" />
 		</Grid.RowDefinitions>
+		
+		<Image Grid.Row="0"  Source="/MindFoxLeaveApplication;component/MindFoxLogoPNG.png" />
+		
+		<Grid Grid.Row="1">
+			<Grid Width="200" VerticalAlignment="Top">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="*" />
+					<RowDefinition Height="*" />
+					<RowDefinition Height="*" />
+				</Grid.RowDefinitions>
 
-		<!-- Title -->
-		<Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="16">
-			Mind Fox Leave Form
-		</Label>
+				<StackPanel Grid.Row="0" Margin="0,0,0,10">
+					<Label Content="Username" Style="{StaticResource LoginLabelStyle}" />
+					<TextBox Style="{StaticResource LoginTextBoxStyle}"/>
+				</StackPanel>
 
-		<!-- Form -->
-		<Grid Grid.Row="1" >
-			<Grid.RowDefinitions>
-				<RowDefinition Height="*" />
-				<RowDefinition Height="*" />
-				<RowDefinition Height="*" />
-			</Grid.RowDefinitions>
+				<StackPanel Grid.Row="1"  Margin="0,0,0,10">
+					<Label Content="Password" Style="{StaticResource LoginLabelStyle}" />
+					<TextBox Style="{StaticResource LoginTextBoxStyle}"/>
+				</StackPanel>
 
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*" />
-				<ColumnDefinition Width="*" />
-				<ColumnDefinition Width="*" />
-			</Grid.ColumnDefinitions>
+				<Button Grid.Row="2"  Content="Submit" Style="{StaticResource LoginButtonStyle}"/>
 
-			<Grid.Resources>
-				<Style TargetType="StackPanel">
-					<Setter Property="VerticalAlignment" Value="Center"/>
-					<Setter Property="Margin" Value="10 0" />
-				</Style>
-
-				<Style TargetType="Label">
-					<Setter Property="FontWeight" Value="DemiBold" />
-				</Style>
-
-				<Style TargetType="TextBox">
-					<Setter Property="MinHeight" Value="22" />
-					<Setter Property="Template">
-						<Setter.Value>
-							<ControlTemplate TargetType="TextBox">
-								<Border x:Name="border"
-												BorderBrush="Gray"
-												BorderThickness="1"
-												CornerRadius="3">
-									<Border x:Name="innerBorder"
-													Margin="1"
-													Background="White"
-													CornerRadius="3">
-										<ScrollViewer x:Name="PART_ContentHost"/>
-									</Border>
-								</Border>
-								<ControlTemplate.Triggers>
-									<Trigger Property="IsFocused" Value="True">
-										<Setter TargetName="border" Property="BorderBrush" Value="DarkOrange"/>
-										<Setter TargetName="border" Property="Effect">
-											<Setter.Value>
-												<DropShadowEffect ShadowDepth="3" Color="Black" Opacity=".9"/>
-											</Setter.Value>
-										</Setter>
-									</Trigger>
-								</ControlTemplate.Triggers>
-							</ControlTemplate>
-						</Setter.Value>
-					</Setter>
-					<Setter Property="FontWeight" Value="DemiBold"/>
-				</Style>
-
-			</Grid.Resources>
-
-			<!-- Employee Name -->
-			<StackPanel Grid.Row="0" Grid.Column="0">
-				<Label>
-					Employee Name:
-				</Label>
-				<ComboBox IsEditable="True" x:Name="EmployeeName" ItemsSource="{Binding Path=EmployeeNames}" SelectedItem="{Binding Path=CurrentEmployee.Name}" SelectionChanged="EmployeeName_SelectionChanged" LostFocus="EmployeeName_LostFocus" />
-			</StackPanel>
-
-			<!-- Employee ID -->
-			<StackPanel Grid.Row="0" Grid.Column="1">
-				<Label>
-					Employee ID:
-				</Label>
-				<TextBox x:Name="EmployeeId" IsReadOnly="True"  ToolTip="Test" Text="{Binding Path=CurrentEmployee.ID, UpdateSourceTrigger=PropertyChanged}"/>
-			</StackPanel>
-
-			<!-- Reporting To -->
-			<StackPanel Grid.Row="0" Grid.Column="2">
-				<Label>
-					Reporting To:
-				</Label>
-				<ComboBox IsEditable="True" x:Name="ReportingTo" ItemsSource="{Binding Path=AdminNames}" />
-			</StackPanel>
-
-			<!-- From-To Date -->
-			<StackPanel Grid.Row="1" Grid.Column="0">
-				<Label>
-					Date:
-				</Label>
-				<DatePicker x:Name="FromDate" Margin="0,0,0,5" SelectedDateChanged="FromDate_SelectedDateChanged" />
-				<DatePicker x:Name="ToDate" SelectedDateChanged="ToDate_SelectedDateChanged" />
-			</StackPanel>
-
-			<!-- Type of Leave -->
-			<StackPanel Grid.Row="1" Grid.Column="1">
-				<Label>
-					Type of Leave:
-				</Label>
-				<ComboBox x:Name="LeaveType" ItemsSource="{Binding LeaveTypes}" SelectionChanged="LeaveType_SelectionChanged" />
-			</StackPanel>
-
-			<!-- Balance Card -->
-			<StackPanel Grid.Row="1" Grid.Column="2">
-				<Label>
-					Leave Balance:
-				</Label>
-
-				<!-- Leave Balance -->
-				<UniformGrid Rows="2" Columns="3">
-					<UniformGrid.Resources>
-						<Style TargetType="TextBlock">
-							<Setter Property="HorizontalAlignment" Value="Center" />
-						</Style>
-					</UniformGrid.Resources>
-
-					<TextBlock Text="EL" />
-					<TextBlock Text="CL" />
-					<TextBlock Text="PL" />
-					<TextBlock Text="{Binding Path=CurrentEmployee.EarnedLeave, UpdateSourceTrigger=PropertyChanged}" />
-					<TextBlock Text="{Binding Path=CurrentEmployee.CasualLeave, UpdateSourceTrigger=PropertyChanged}" />
-					<TextBlock Text="{Binding Path=CurrentEmployee.PersonalLeave, UpdateSourceTrigger=PropertyChanged}" />
-				</UniformGrid>
-			</StackPanel>
-
-			<StackPanel  Grid.Row="2" Grid.ColumnSpan="3">
-				<Label>
-					Reason:
-				</Label>
-				<TextBox x:Name="Reason" MinHeight="50"/>
-			</StackPanel>
-
+			</Grid>
 		</Grid>
-
-		<!-- Submit button -->
-		<Grid Grid.Row="2">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="*" />
-			</Grid.RowDefinitions>
-			<Button x:Name="Submit" Content="Submit" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,30" Click="Submit_Click" />
-		</Grid>
-
+	<!--<ComboBox Grid.Row="2" ItemsSource="{x:Static Fonts.SystemFontFamilies}"
+          SelectedValue="{Binding ElementName=MyTextBlock, Path=FontFamily}" />-->
 	</Grid>
-
 </Window>

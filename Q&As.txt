@@ -1,0 +1,3 @@
+Program hit point - app.xaml then to startupuri
+Interfaces
+Eventhandlers
