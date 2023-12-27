@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Mind_Fox_Leave_Application
 {
-    public class UserQuota : INotifyPropertyChanged
+    public class EmployeeQuota : INotifyPropertyChanged
     {
         #region Properties
 

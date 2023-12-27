@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfEmployeeQuota xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<EmployeeQuota>
+		<ID>0001</ID>
+		<EarnedLeave>12</EarnedLeave>
+		<CasualLeave>12</CasualLeave>
+		<PersonalLeave>2</PersonalLeave>
+	</EmployeeQuota>
+	<EmployeeQuota>
+		<ID>0002</ID>
+		<EarnedLeave>12</EarnedLeave>
+		<CasualLeave>12</CasualLeave>
+		<PersonalLeave>2</PersonalLeave>
+	</EmployeeQuota>
+	<EmployeeQuota>
+		<ID>0003</ID>
+		<EarnedLeave>12</EarnedLeave>
+		<CasualLeave>12</CasualLeave>
+		<PersonalLeave>2</PersonalLeave>
+	</EmployeeQuota>
+	<EmployeeQuota>
+		<ID>0004</ID>
+		<EarnedLeave>12</EarnedLeave>
+		<CasualLeave>12</CasualLeave>
+		<PersonalLeave>2</PersonalLeave>
+	</EmployeeQuota>
+	<EmployeeQuota>
+		<ID>0005</ID>
+		<EarnedLeave>12</EarnedLeave>
+		<CasualLeave>12</CasualLeave>
+		<PersonalLeave>2</PersonalLeave>
+	</EmployeeQuota>
+	<EmployeeQuota>
+		<ID>0006</ID>
+		<EarnedLeave>12</EarnedLeave>
+		<CasualLeave>12</CasualLeave>
+		<PersonalLeave>2</PersonalLeave>
+	</EmployeeQuota>
+	<EmployeeQuota>
+		<ID>0007</ID>
+		<EarnedLeave>12</EarnedLeave>
+		<CasualLeave>12</CasualLeave>
+		<PersonalLeave>2</PersonalLeave>
+	</EmployeeQuota>
+</ArrayOfEmployeeQuota>

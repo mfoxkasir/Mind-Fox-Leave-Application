@@ -1,5 +1,5 @@
 Name,ID,CanReport,EarnedLeave,CasualLeave,PersonalLeave
-Vicky,0001,True,10,12,2
+Vicky,0001,True,12,12,2
 Gowtham,0002,True,12,12,2
 Subash,0003,False,12,12,2
 Adithya,0004,False,12,12,2

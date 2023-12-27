@@ -9,15 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="MindfoxLogo.svg" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="CsvHelper" Version="30.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="MindfoxLogo.svg" />
+    <Folder Include="EmployeeXML\" />
   </ItemGroup>
 
 </Project>

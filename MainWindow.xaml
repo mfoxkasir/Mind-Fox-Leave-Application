@@ -7,48 +7,28 @@
         mc:Ignorable="d"
         Title="Mind Fox HR Management" Height="450" Width="800">
 
+	<!--<Frame x:Name="MainFrame" />-->
 	<Window.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="Dictionary1.xaml"/>
+				<ResourceDictionary Source="LoginResourceDictionary.xaml" />
 				<!-- Add other merged dictionaries if any -->
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</Window.Resources>
-	
-	<!--<Frame x:Name="MainFrame" />-->
+
 	<Grid Style="{StaticResource LoginBGStyle}">
 		<Grid.RowDefinitions>
-			<RowDefinition Height="35*" />
 			<RowDefinition Height="65*" />
-			<RowDefinition Height="auto" />
+			<RowDefinition Height="35*" />
 		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
+
+		<Button Grid.Row="0" Grid.Column="0" Content="Monthly Attendence" />
 		
-		<Image Grid.Row="0"  Source="/MindFoxLeaveApplication;component/MindFoxLogoPNG.png" />
-		
-		<Grid Grid.Row="1">
-			<Grid Width="200" VerticalAlignment="Top">
-				<Grid.RowDefinitions>
-					<RowDefinition Height="*" />
-					<RowDefinition Height="*" />
-					<RowDefinition Height="*" />
-				</Grid.RowDefinitions>
-
-				<StackPanel Grid.Row="0" Margin="0,0,0,10">
-					<Label Content="Username" Style="{StaticResource LoginLabelStyle}" />
-					<TextBox Style="{StaticResource LoginTextBoxStyle}"/>
-				</StackPanel>
-
-				<StackPanel Grid.Row="1"  Margin="0,0,0,10">
-					<Label Content="Password" Style="{StaticResource LoginLabelStyle}" />
-					<TextBox Style="{StaticResource LoginTextBoxStyle}"/>
-				</StackPanel>
-
-				<Button Grid.Row="2"  Content="Submit" Style="{StaticResource LoginButtonStyle}"/>
-
-			</Grid>
-		</Grid>
-	<!--<ComboBox Grid.Row="2" ItemsSource="{x:Static Fonts.SystemFontFamilies}"
-          SelectedValue="{Binding ElementName=MyTextBlock, Path=FontFamily}" />-->
+		<ListBox
 	</Grid>
 </Window>

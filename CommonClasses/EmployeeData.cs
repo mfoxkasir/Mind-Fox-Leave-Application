@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MindFoxUserData
+namespace MindFoxEmployeeData
 {
-    public class User : INotifyPropertyChanged
+    public class EmployeeData : INotifyPropertyChanged
     {
 
         #region Properties
@@ -82,8 +82,8 @@ namespace MindFoxUserData
             }
         }
 
-        private string isAdmin;
-        public string IsAdmin
+        private bool isAdmin;
+        public bool IsAdmin
         {
             get { return isAdmin; }
             set
