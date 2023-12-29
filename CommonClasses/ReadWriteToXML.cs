@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace ReadWriteXML
@@ -55,27 +56,41 @@ namespace ReadWriteXML
             }
         }
 
+        //public void AppendObjectToXml<T>(T obj, string filePath)
+        //{
+        //    serializer = new XmlSerializer(typeof(T));
+
+        //    // Check if the file exists
+        //    if (File.Exists(filePath))
+        //    {
+        //        // Open the file in append mode
+        //        using (FileStream fileStream = File.Open(filePath, FileMode.Append))
+        //        {
+        //            serializer.Serialize(fileStream, obj);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        // If the file doesn't exist, create a new file and serialize the object
+        //        using (FileStream fileStream = File.Create(filePath))
+        //        {
+        //            serializer.Serialize(fileStream, obj);
+        //        }
+        //    }
+        //}
+
         public void AppendObjectToXml<T>(T obj, string filePath)
         {
-            serializer = new XmlSerializer(typeof(T));
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(filePath);
+            XmlNode root = xmlDoc.DocumentElement;
 
-            // Check if the file exists
-            if (File.Exists(filePath))
-            {
-                // Open the file in append mode
-                using (FileStream fileStream = File.Open(filePath, FileMode.Append))
-                {
-                    serializer.Serialize(fileStream, obj);
-                }
-            }
-            else
-            {
-                // If the file doesn't exist, create a new file and serialize the object
-                using (FileStream fileStream = File.Create(filePath))
-                {
-                    serializer.Serialize(fileStream, obj);
-                }
-            }
+            serializer = new XmlSerializer(typeof(T));
+            StringWriter writer = new StringWriter();
+            serializer.Serialize(writer, obj);
+            string xmlString = writer.ToString();
+
+            root.AppendChild(writer);
         }
 
 

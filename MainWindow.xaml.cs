@@ -72,6 +72,8 @@ namespace Mind_Fox_Leave_Application
             employeeQuotaFilePath = readWriteToXML.XMLFilePathMaker(commonXML, employeeQuotaFileName);
             this.mindFoxEmployeeQuotaList = EmployeeQuotaList.getInstance(employeeQuotaFilePath);
 
+            readWriteToXML.AppendObjectToXml(mindFoxEmployeeDataList.ListOfEmployees, employeeDataFilePath);
+
             this.mindFoxLeaveLogger = new EmployeeLeaveLogger();
 
 
