@@ -25,7 +25,7 @@
 			<RowDefinition Height="auto" />
 		</Grid.RowDefinitions>
 
-		<Image Grid.Row="0"  Source="/MindFoxLeaveApplication;component/MindFoxLogoPNG.png" />
+		<Image Grid.Row="0"  Source="MindfoxLogoPNG.png" />
 
 		<Grid Grid.Row="1">
 			<Grid Width="200" VerticalAlignment="Top">
@@ -42,10 +42,10 @@
 
 				<StackPanel Grid.Row="1"  Margin="0,0,0,10">
 					<Label Content="Password" Style="{StaticResource LoginLabelStyle}" />
-					<TextBox Style="{StaticResource LoginTextBoxStyle}"/>
+					<PasswordBox Style="{StaticResource LoginPasswordBoxStyle}" />
 				</StackPanel>
 
-				<Button Grid.Row="2"  Content="Submit" Style="{StaticResource LoginButtonStyle}"/>
+				<Button Grid.Row="2"  Content="Submit" Style="{StaticResource LoginButtonStyle}" Command="{Binding LoginCommand}"/>
 
 			</Grid>
 		</Grid>

@@ -10,6 +10,7 @@ namespace Mind_Fox_Leave_Application.ApplicationSpecificClasses
 {
     class EmployeeQuotaList
     {
+
         #region Properties
 
         private List<EmployeeQuota> listOfEmployeeQuota;
@@ -47,5 +48,6 @@ namespace Mind_Fox_Leave_Application.ApplicationSpecificClasses
         }
 
         #endregion
+
     }
 }

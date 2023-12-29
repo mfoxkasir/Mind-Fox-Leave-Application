@@ -12,17 +12,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MindFoxEmployeeData;
 
 namespace Mind_Fox_Leave_Application
 {
     /// <summary>
     /// Interaction logic for Page1.xaml
     /// </summary>
-    public partial class Page1 : Page
+    public partial class LeaveHistory : Page
     {
-        public Page1()
+
+        public EmployeeDataList employeeDataList;
+        public LeaveHistory(EmployeeDataList employeeDataList)
         {
-            //InitializeComponent();
+            InitializeComponent();
+            this.employeeDataList = employeeDataList;
+            this.DataContext = employeeDataList;
         }
     }
 }

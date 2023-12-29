@@ -21,6 +21,7 @@ using System.Windows.Shapes;
 using System.Xml.Serialization;
 using ReadWriteXML;
 using MindFoxEmployeeData;
+using Mind_Fox_Leave_Application.ApplicationSpecificClasses;
 
 namespace Mind_Fox_Leave_Application
 {
@@ -33,13 +34,24 @@ namespace Mind_Fox_Leave_Application
         #region Private variables
 
         // Fetch EmployeeList from CSV
-        private EmployeeDataList mindFox;
+        private EmployeeDataList mindFoxEmployeeDataList;
+
+        private EmployeeQuotaList mindFoxEmployeeQuotaList;
+
+        private EmployeeLeaveLogger mindFoxLeaveLogger;
 
         // Store selected employee
-        private Employee currentEmployee;
+        //private Employee currentEmployee;
 
+        private ReadWriteToXML readWriteToXML;
+        private string commonXML = "CommonXML";
+        private string employeeXML = "EmployeeXML";
+        private string employeeDataFileName = "EmployeeData.xml";
+        private string employeeQuotaFileName = "EmployeeQuota.xml";
+        private string employeeDataFilePath;
+        private string employeeQuotaFilePath;
         // Log the submit event into log file
-        private LeaveLogger log;
+        //private LeaveLogger log;
 
         #endregion
 
@@ -51,21 +63,28 @@ namespace Mind_Fox_Leave_Application
         public MainWindow()
         {
             InitializeComponent();
+
+            this.readWriteToXML = new ReadWriteToXML();
+
+            employeeDataFilePath = readWriteToXML.XMLFilePathMaker(commonXML, employeeDataFileName);
+            this.mindFoxEmployeeDataList = EmployeeDataList.getInstance(employeeDataFilePath);
+
+            employeeQuotaFilePath = readWriteToXML.XMLFilePathMaker(commonXML, employeeQuotaFileName);
+            this.mindFoxEmployeeQuotaList = EmployeeQuotaList.getInstance(employeeQuotaFilePath);
+
+            this.mindFoxLeaveLogger = new EmployeeLeaveLogger();
+
+
+            // MainFrame.NavigationService.Navigate(new LeaveHistory(mindFoxEmployeeDataList));
+            mainFrame.NavigationService.Navigate(new LoginPage(mindFoxEmployeeDataList));
             //this.mindFox = new EmployeeList("data.csv");
-            this.log = new LeaveLogger();
             //this.DataContext = this.mindFox;
 
-            string EmployeeDataFilePath =  this.XMLFilePathMaker("EmployeeData.xml");
-            this.mindFox = EmployeeDataList.getInstance(EmployeeDataFilePath);
+            //string EmployeeDataFilePath =  readWriteToXML.XMLFilePathMaker("CommonXML", "EmployeeData.xml");
+            //this.mindFox = EmployeeDataList.getInstance(EmployeeDataFilePath);
+            // this.mindFoxQuotaList = EmployeeQuotaList.getInstance(EmployeeDataFilePath);
 
             return;
-        }
-
-        private string XMLFilePathMaker(string fileName)
-        {
-            fileName = "CommonXML\\" + fileName;
-            string filePath = System.IO.Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, fileName);
-            return filePath;
         }
 
         #region Private methods
